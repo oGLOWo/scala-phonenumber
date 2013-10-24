@@ -9,6 +9,8 @@ import PhoneNumberFormat._
 case class PhoneNumber(rawNumber: Option[String] = None, country: Country, protected val underlyingNumber: Phonenumber.PhoneNumber) {
   def format(format: PhoneNumberFormat): String = PhoneNumberUtil.getInstance().format(underlyingNumber, format)
 
+  def toLong: Long = format(E164).substring(1).toLong
+
   override def equals(other: Any): Boolean =
     other match {
       case that: PhoneNumber => (that canEqual this) && format(Rfc3966) == that.format(Rfc3966)
