@@ -6,7 +6,7 @@ import com.google.i18n.phonenumbers.{NumberParseException, Phonenumber, PhoneNum
 import Countries._
 import PhoneNumberFormat._
 
-case class PhoneNumber(rawNumber: Option[String] = None, country: Country, protected val underlyingNumber: Phonenumber.PhoneNumber) {
+class PhoneNumber(rawNumber: Option[String] = None, country: Country, protected val underlyingNumber: Phonenumber.PhoneNumber) {
   def format(format: PhoneNumberFormat): String = PhoneNumberUtil.getInstance().format(underlyingNumber, format)
 
   def toLong: Long = format(E164).substring(1).toLong
@@ -22,7 +22,7 @@ case class PhoneNumber(rawNumber: Option[String] = None, country: Country, prote
     case None => super.hashCode
   }
 
-  override def canEqual(other: Any): Boolean = other.isInstanceOf[PhoneNumber]
+  def canEqual(other: Any): Boolean = other.isInstanceOf[PhoneNumber]
 }
 
 object PhoneNumber {
@@ -30,7 +30,7 @@ object PhoneNumber {
     try {
       val country = `United States of America`
       val underlyingNumber = PhoneNumberUtil.getInstance().parseAndKeepRawInput(rawNumber, country.isoA2CountryCode)
-      PhoneNumber(Some(rawNumber), country, underlyingNumber).success
+      new PhoneNumber(Some(rawNumber), country, underlyingNumber).success
     }
     catch {
       case e: NumberParseException => e.failure
