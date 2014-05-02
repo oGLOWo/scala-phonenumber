@@ -6,7 +6,7 @@ import com.google.i18n.phonenumbers.{NumberParseException, Phonenumber, PhoneNum
 import Countries._
 import PhoneNumberFormat._
 
-class PhoneNumber(rawNumber: Option[String] = None, country: Country, protected val underlyingNumber: Phonenumber.PhoneNumber) {
+class PhoneNumber(val rawNumber: Option[String] = None, val country: Country, protected val underlyingNumber: Phonenumber.PhoneNumber) {
   def format(format: PhoneNumberFormat): String = PhoneNumberUtil.getInstance().format(underlyingNumber, format)
 
   def toLong: Long = format(E164).substring(1).toLong
